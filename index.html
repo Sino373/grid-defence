@@ -323,7 +323,7 @@ const PATH_SET = new Set(PATH_COORDS.map(([x,y])=>`${x},${y}`));
 //  TOWER DEFINITIONS
 // ════════════════════════════════════════════════════════════════
 const BASE_TOWERS = {
-  gun:    {name:'GUN TURRET', cost:80,  dmg:22,  range:3.2, rate:0.85, color:'#00e5ff', proj:'bullet',splash:0,   slow:0,   desc:'Reliable rapid fire'},
+  gun:    {name:'BULLET TURRET', cost:80,  dmg:22,  range:3.2, rate:0.85, color:'#00e5ff', proj:'bullet',splash:0,   slow:0,   desc:'Reliable rapid fire'},
   sniper: {name:'RAIL GUN',   cost:160, dmg:100, range:6.5, rate:0.28, color:'#c044ff', proj:'rail',  splash:0,   slow:0,   desc:'Long range precision'},
   mortar: {name:'MORTAR',     cost:220, dmg:70,  range:4.2, rate:0.32, color:'#ff8800', proj:'shell', splash:1.3, slow:0,   desc:'Explosive area damage'},
   laser:  {name:'LASER',      cost:320, dmg:6,   range:4,   rate:9,    color:'#00ff88', proj:'beam',  splash:0,   slow:0,   desc:'Continuous beam DPS'},
@@ -342,7 +342,7 @@ const GACHA_TOWERS = {
   teslacoil:    {name:'TESLA COIL',    cost:0,dmg:60, range:3.8,rate:0.9, color:'#ffff33',proj:'tesla',  splash:1.1,slow:0,  rarity:'rare',      icon:'🔩',desc:'2× damage vs slowed targets'},
   omegabastion: {name:'OMEGA BASTION', cost:0,dmg:95, range:4.2,rate:0.6, color:'#ff0088',proj:'omega',  splash:0,  slow:0,  rarity:'legendary', icon:'🛡',desc:'Attacks + buffs nearby towers'},
   mirrorshard:  {name:'MIRROR SHARD',  cost:0,dmg:55, range:3.5,rate:1.1, color:'#88ffdd',proj:'mirror', splash:0,  slow:0,  rarity:'epic',      icon:'🔷',desc:'Bounces shot between 3 enemies'},
-  cyclonestriker:    {name:'CYCLONE',    cost:0,dmg:15, range:4.1,rate:3.5,color:'#7700cc',proj:'cyclone',  splash:4.1,slow:0.8,rarity:'legendary', icon:'🌪️',desc:'Drifting tornado — ticks AoE damage every 0.25s for 3.5s'},
+  cyclonestriker:    {name:'CYCLONE',    cost:0,dmg:15, range:3,rate:3.5,color:'#7700cc',proj:'cyclone',  splash:3,slow:0.8,rarity:'legendary', icon:'🌪️',desc:'Drifting tornado — ticks AoE damage every 0.25s for 3.5s'},
 };
 
 const RARITY_WEIGHTS = {common:58,rare:28,epic:12,legendary:2};
@@ -355,7 +355,7 @@ const GACHA_KEYS     = Object.keys(GACHA_TOWERS);
 //  ENEMY DEFINITIONS
 // ════════════════════════════════════════════════════════════════
 const ENEMY_DEF = {
-  drone:     {hp:85,   speed:1.4,  reward:10,  size:7,  color:'#ff2244', name:'DRONE',      lives:1},
+  drone:     {hp:95,   speed:1.4,  reward:10,  size:7,  color:'#ff2244', name:'DRONE',      lives:1},
   scout:     {hp:50,   speed:3.0,  reward:12,  size:5,  color:'#ff8800', name:'SCOUT',      lives:1},
   tank:      {hp:420,  speed:0.72, reward:32,  size:13, color:'#8855ff', name:'TANK',       lives:1},
   phantom:   {hp:65,   speed:1.9,  reward:22,  size:6,  color:'#aaffee', name:'PHANTOM',    lives:1, stealth:true},
@@ -369,7 +369,7 @@ const ENEMY_DEF = {
   titan:     {hp:2800, speed:0.42, reward:130, size:21, color:'#ff4400', name:'TITAN',      lives:5, splits:'miniboss'},
   colossus:  {hp:6000, speed:0.38, reward:300, size:26, color:'#ff2200', name:'COLOSSUS',   lives:8, splits:'titan'},
   overlord:  {hp:14000,speed:0.25, reward:800, size:30, color:'#0088ff', name:'OVERLORD',   lives:15,splits:'colossus'},
-  berserker: {hp:250,  speed:1.5,  reward:18,  size:10,  color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
+  berserker: {hp:250,  speed:1.75,  reward:18,  size:8,  color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
   shieldwall: {hp:280, speed:0.8,  reward:35,  size:11, color:'#44aaff', name:'SHIELDWALL',  lives:1, shield:true},
   mimic:     {hp:220,  speed:1.6,  reward:50,  size:9,  color:'#ffaa00', name:'MIMIC',      lives:1, mimic:true},
   miniboss:  {hp:700,  speed:0.55, reward:45,  size:16, color:'#cc3300', name:'SPAWN',      lives:2},
