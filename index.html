@@ -342,7 +342,7 @@ const GACHA_TOWERS = {
   teslacoil:    {name:'TESLA COIL',    cost:0,dmg:60, range:3.8,rate:0.9, color:'#ffff33',proj:'tesla',  splash:1.1,slow:0,  rarity:'rare',      icon:'🔩',desc:'2× damage vs slowed targets'},
   omegabastion: {name:'OMEGA BASTION', cost:0,dmg:95, range:4.2,rate:0.6, color:'#ff0088',proj:'omega',  splash:0,  slow:0,  rarity:'legendary', icon:'🛡',desc:'Attacks + buffs nearby towers'},
   mirrorshard:  {name:'MIRROR SHARD',  cost:0,dmg:55, range:3.5,rate:1.1, color:'#88ffdd',proj:'mirror', splash:0,  slow:0,  rarity:'epic',      icon:'🔷',desc:'Bounces shot between 3 enemies'},
-  cyclonestriker:    {name:'CYCLONE',    cost:0,dmg:35, range:5.0,rate:0.22,color:'#7700cc',proj:'cyclone',  splash:5.0,slow:0.8,rarity:'legendary', icon:'🌀',desc:'Drifting tornado — ticks AoE damage every 0.25s for 3.5s'},
+  cyclonestriker:    {name:'CYCLONE',    cost:0,dmg:15, range:4.1,rate:2.5,color:'#7700cc',proj:'cyclone',  splash:4.1,slow:0.8,rarity:'legendary', icon:'🌀',desc:'Drifting tornado — ticks AoE damage every 0.25s for 3.5s'},
 };
 
 const RARITY_WEIGHTS = {common:55,rare:28,epic:12,legendary:5};
@@ -366,10 +366,10 @@ const ENEMY_DEF = {
   swarm:     {hp:28,   speed:2.4,  reward:4,   size:4,  color:'#ff6688', name:'SWARM',      lives:1},
   wraith:    {hp:520,  speed:0.65, reward:65,  size:15, color:'#cc88ff', name:'WRAITH',     lives:1, immune:true},
   boss:      {hp:1400, speed:0.52, reward:90,  size:18, color:'#ff0044', name:'BOSS',       lives:3},
-  titan:     {hp:2800, speed:0.38, reward:130, size:21, color:'#ff4400', name:'TITAN',      lives:5, splits:'miniboss'},
-  colossus:  {hp:6000, speed:0.28, reward:300, size:26, color:'#ff2200', name:'COLOSSUS',   lives:8, splits:'titan'},
-  overlord:  {hp:14000,speed:0.22, reward:800, size:30, color:'#0088ff', name:'OVERLORD',   lives:15,splits:'colossus'},
-  berserker: {hp:200,  speed:1.5,  reward:18,  size:10,  color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
+  titan:     {hp:2800, speed:0.42, reward:130, size:21, color:'#ff4400', name:'TITAN',      lives:5, splits:'miniboss'},
+  colossus:  {hp:6000, speed:0.38, reward:300, size:26, color:'#ff2200', name:'COLOSSUS',   lives:8, splits:'titan'},
+  overlord:  {hp:14000,speed:0.25, reward:800, size:30, color:'#0088ff', name:'OVERLORD',   lives:15,splits:'colossus'},
+  berserker: {hp:250,  speed:1.5,  reward:18,  size:10,  color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
   shieldwall: {hp:280, speed:0.8,  reward:35,  size:11, color:'#44aaff', name:'SHIELDWALL',  lives:1, shield:true},
   mimic:     {hp:220,  speed:1.6,  reward:50,  size:9,  color:'#ffaa00', name:'MIMIC',      lives:1, mimic:true},
   miniboss:  {hp:700,  speed:0.55, reward:45,  size:16, color:'#cc3300', name:'SPAWN',      lives:2},
