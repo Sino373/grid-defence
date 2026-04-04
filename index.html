@@ -198,6 +198,35 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .mob-sel-row span:last-child{color:#cde}
 .mob-action-row{display:flex;gap:6px}
 .mob-action-row .btn{font-size:.65rem;padding:7px 4px}
+
+/* ══════════════ ADMIN PANEL ══════════════ */
+#admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:600;backdrop-filter:blur(6px)}
+#admin-overlay.open{display:flex}
+#admin-box{width:520px;max-height:88vh;overflow-y:auto;background:#050b16;border:1px solid #ff2244;box-shadow:0 0 60px rgba(255,34,68,.25);padding:24px;position:relative}
+#admin-box::-webkit-scrollbar{width:3px}
+#admin-box::-webkit-scrollbar-thumb{background:#ff2244}
+.adm-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;color:#ff2244;letter-spacing:.2em;margin-bottom:4px;text-shadow:0 0 16px rgba(255,34,68,.5)}
+.adm-sub{font-size:.62rem;color:var(--text2);letter-spacing:.18em;margin-bottom:20px}
+#close-admin{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text2);font-size:1.1rem;cursor:pointer}
+#close-admin:hover{color:#fff}
+.adm-section{border:1px solid #1a0a0a;padding:12px;margin-bottom:14px}
+.adm-section-title{font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:.2em;color:#ff2244;margin-bottom:10px;opacity:.8}
+.adm-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.72rem;color:var(--text)}
+.adm-row label{width:90px;flex-shrink:0;color:var(--text2)}
+.adm-input{flex:1;background:rgba(0,0,0,.5);border:1px solid #1a3a5a;color:#fff;padding:5px 9px;font-family:'Share Tech Mono',monospace;font-size:.72rem}
+.adm-input:focus{outline:none;border-color:#ff2244}
+.adm-btn{padding:6px 14px;border:1px solid #ff2244;color:#ff2244;background:transparent;font-family:'Share Tech Mono',monospace;font-size:.68rem;cursor:pointer;transition:all .12s;letter-spacing:.08em}
+.adm-btn:hover{background:rgba(255,34,68,.12)}
+.adm-btn.green{border-color:var(--green);color:var(--green)}
+.adm-btn.green:hover{background:rgba(0,255,136,.1)}
+.adm-btn.gold{border-color:var(--gold);color:var(--gold)}
+.adm-btn.gold:hover{background:rgba(255,196,0,.1)}
+.adm-tower-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.adm-tower-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);font-size:.65rem}
+.adm-tower-item span{flex:1;font-family:'Orbitron',sans-serif;font-size:.55rem;color:var(--text)}
+.adm-qty-input{width:44px;background:rgba(0,0,0,.5);border:1px solid #1a3a5a;color:#fff;padding:3px 6px;font-family:'Share Tech Mono',monospace;font-size:.68rem;text-align:center}
+.adm-qty-input:focus{outline:none;border-color:#ff2244}
+.adm-hint{font-size:.58rem;color:var(--text2);margin-top:6px;letter-spacing:.08em}
 </style>
 </head>
 <body>
@@ -323,7 +352,7 @@ const PATH_SET = new Set(PATH_COORDS.map(([x,y])=>`${x},${y}`));
 //  TOWER DEFINITIONS
 // ════════════════════════════════════════════════════════════════
 const BASE_TOWERS = {
-  gun:    {name:'BULLET TURRET', cost:80,  dmg:22,  range:3.2, rate:0.85, color:'#00e5ff', proj:'bullet',splash:0,   slow:0,   desc:'Reliable bullet fire'},
+  gun:    {name:'GUN TURRET', cost:80,  dmg:22,  range:3.2, rate:0.85, color:'#00e5ff', proj:'bullet',splash:0,   slow:0,   desc:'Reliable rapid fire'},
   sniper: {name:'RAIL GUN',   cost:160, dmg:100, range:6.5, rate:0.28, color:'#c044ff', proj:'rail',  splash:0,   slow:0,   desc:'Long range precision'},
   mortar: {name:'MORTAR',     cost:220, dmg:70,  range:4.2, rate:0.32, color:'#ff8800', proj:'shell', splash:1.3, slow:0,   desc:'Explosive area damage'},
   laser:  {name:'LASER',      cost:320, dmg:6,   range:4,   rate:9,    color:'#00ff88', proj:'beam',  splash:0,   slow:0,   desc:'Continuous beam DPS'},
@@ -342,9 +371,10 @@ const GACHA_TOWERS = {
   teslacoil:    {name:'TESLA COIL',    cost:0,dmg:60, range:3.8,rate:0.9, color:'#ffff33',proj:'tesla',  splash:1.1,slow:0,  rarity:'rare',      icon:'🔩',desc:'2× damage vs slowed targets'},
   omegabastion: {name:'OMEGA BASTION', cost:0,dmg:95, range:4.2,rate:0.6, color:'#ff0088',proj:'omega',  splash:0,  slow:0,  rarity:'legendary', icon:'🛡',desc:'Attacks + buffs nearby towers'},
   mirrorshard:  {name:'MIRROR SHARD',  cost:0,dmg:55, range:3.5,rate:1.1, color:'#88ffdd',proj:'mirror', splash:0,  slow:0,  rarity:'epic',      icon:'🔷',desc:'Bounces shot between 3 enemies'},
-  
+  cyclonestriker:    {name:'CYCLONE',    cost:0,dmg:18, range:3.8,rate:0.15,color:'#7700cc',proj:'cyclone',  splash:3.2,slow:0.4,rarity:'legendary', icon:'🌀',desc:'Drifting tornado — ticks AoE damage every 0.25s for 3.5s'},
+};
 
-const RARITY_WEIGHTS = {common:70,rare:28,epic:1.5,legendary:0.5};
+const RARITY_WEIGHTS = {common:62,rare:25,epic:12,legendary:1};
 const RARITY_COLOR   = {common:'#aaa',rare:'#44aaff',epic:'#c044ff',legendary:'#ffc400'};
 const ALL_TOWERS     = {...BASE_TOWERS, ...GACHA_TOWERS};
 const BASE_KEYS      = Object.keys(BASE_TOWERS);
@@ -354,7 +384,7 @@ const GACHA_KEYS     = Object.keys(GACHA_TOWERS);
 //  ENEMY DEFINITIONS
 // ════════════════════════════════════════════════════════════════
 const ENEMY_DEF = {
-  drone:     {hp:95,   speed:1.4,  reward:10,  size:7,  color:'#ff2244', name:'DRONE',      lives:1},
+  drone:     {hp:85,   speed:1.4,  reward:10,  size:7,  color:'#ff2244', name:'DRONE',      lives:1},
   scout:     {hp:50,   speed:3.0,  reward:12,  size:5,  color:'#ff8800', name:'SCOUT',      lives:1},
   tank:      {hp:420,  speed:0.72, reward:32,  size:13, color:'#8855ff', name:'TANK',       lives:1},
   phantom:   {hp:65,   speed:1.9,  reward:22,  size:6,  color:'#aaffee', name:'PHANTOM',    lives:1, stealth:true},
@@ -365,10 +395,10 @@ const ENEMY_DEF = {
   swarm:     {hp:28,   speed:2.4,  reward:4,   size:4,  color:'#ff6688', name:'SWARM',      lives:1},
   wraith:    {hp:520,  speed:0.65, reward:65,  size:15, color:'#cc88ff', name:'WRAITH',     lives:1, immune:true},
   boss:      {hp:1400, speed:0.52, reward:90,  size:18, color:'#ff0044', name:'BOSS',       lives:3},
-  titan:     {hp:2800, speed:0.50, reward:130, size:21, color:'#ff4400', name:'TITAN',      lives:5, splits:'miniboss'},
-  colossus:  {hp:6000, speed:0.45, reward:300, size:26, color:'#ff2200', name:'COLOSSUS',   lives:8, splits:'titan'},
-  overlord:  {hp:14000,speed:0.35, reward:800, size:30, color:'#0088ff', name:'OVERLORD',   lives:15,splits:'colossus'},
-  berserker: {hp:250,  speed:1.75,  reward:18,  size:8,  color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
+  titan:     {hp:2800, speed:0.38, reward:130, size:21, color:'#ff4400', name:'TITAN',      lives:5, splits:'miniboss'},
+  colossus:  {hp:6000, speed:0.28, reward:300, size:26, color:'#ff2200', name:'COLOSSUS',   lives:8, splits:'titan'},
+  overlord:  {hp:14000,speed:0.22, reward:800, size:30, color:'#0088ff', name:'OVERLORD',   lives:15,splits:'colossus'},
+  berserker: {hp:160,  speed:1.8,  reward:18,  size:14, color:'#ff4400', name:'BERSERKER',  lives:1, rage:true},
   shieldwall: {hp:280, speed:0.8,  reward:35,  size:11, color:'#44aaff', name:'SHIELDWALL',  lives:1, shield:true},
   mimic:     {hp:220,  speed:1.6,  reward:50,  size:9,  color:'#ffaa00', name:'MIMIC',      lives:1, mimic:true},
   miniboss:  {hp:700,  speed:0.55, reward:45,  size:16, color:'#cc3300', name:'SPAWN',      lives:2},
@@ -999,9 +1029,15 @@ function updateProjectiles(dt) {
       p.vx+=(dx/len*5.5*CELL-p.vx)*dt*5; p.vy+=(dy/len*5.5*CELL-p.vy)*dt*5;
     }
 
-    // Swept movement step
-    const stepX=p.vx*dt, stepY=p.vy*dt;
-    const HR = p.splash>0 ? 10 : 14; // generous hit radius to compensate for prediction error
+    // Subdivide step to prevent tunneling at any game speed
+    const SUBSTEPS = Math.ceil(Math.max(Math.abs(p.vx), Math.abs(p.vy)) * dt / 18);
+    const sdt = dt / SUBSTEPS;
+    const stepX=p.vx*sdt, stepY=p.vy*sdt;
+    const HR = p.splash>0 ? 10 : 14;
+
+    // Run collision in substeps
+    let _killed = false;
+    for(let _s=0; _s<SUBSTEPS && !_killed; _s++){
 
     // Quantum: pierce all using swept check
     if(p.type==='quantum'){
@@ -1031,32 +1067,38 @@ function updateProjectiles(dt) {
             G.projectiles.push({type:'beam',x:last.x,y:last.y,tx:near.x,ty:near.y,life:0.1,color:p.color});
             applyHit(near,p.dmg*0.62,p.slow,p.type); done.add(near); last=near;
           }
-          addParticle(p.x,p.y,p.color,8,true); return false;
+          addParticle(p.x,p.y,p.color,8,true); _killed=true; break;
         }
       }
       p.x+=stepX; p.y+=stepY;
       if(p.x<-60||p.x>W+60||p.y<-60||p.y>H+60) return false;
-      return true;
+      break;
     }
 
-    // Mirror shard: bounces between up to 3 enemies
+    // Mirror shard: bounces between up to 3 enemies with visible beam trails
     if(p.type==='mirror'){
       for(const e of G.enemies){
         if(e.dead||e.reached) continue;
         if((()=>{const {rx,ry}=relStep(p,e,stepX,stepY,dt);return sweptHit(p.x,p.y,rx,ry,e.x,e.y,e.size+HR);})()>=0){
           applyHit(e,p.dmg,p.slow,p.type);
-          addParticle(e.x,e.y,p.color,5,false);
+          addParticle(e.x,e.y,p.color,6,true);
+          // Visible beam trail from projectile origin to hit point
+          G.projectiles.push({type:'beam',x:p.x,y:p.y,tx:e.x,ty:e.y,life:0.25,color:'#88ffdd'});
           const bounces=p.bounces||0;
           if(bounces<2){
             // Find next nearest enemy not yet hit
             const done=p.hitSet||(p.hitSet=new Set()); done.add(e);
-            let near=null,nd=180;
+            let near=null,nd=260;
             G.enemies.forEach(n=>{if(n.dead||n.reached||done.has(n)) return; const d=Math.hypot(n.x-e.x,n.y-e.y);if(d<nd){nd=d;near=n;}});
             if(near){
               const bx=e.x,by=e.y,tx=near.x,ty=near.y;
               const bl=Math.hypot(tx-bx,ty-by)||1;
-              G.projectiles.push({type:'mirror',x:bx,y:by,vx:(tx-bx)/bl*BULLET_SPEED,vy:(ty-by)/bl*BULLET_SPEED,
+              // Visible beam trail connecting bounce targets
+              G.projectiles.push({type:'beam',x:bx,y:by,tx:tx,ty:ty,life:0.3,color:'#aaffee'});
+              const bounceSpeed=BULLET_SPEED*0.55;
+              G.projectiles.push({type:'mirror',x:bx,y:by,vx:(tx-bx)/bl*bounceSpeed,vy:(ty-by)/bl*bounceSpeed,
                 target:near,dmg:p.dmg*0.72,splash:0,slow:p.slow,color:p.color,life:2,bounces:bounces+1,hitSet:done});
+              addParticle(bx,by,'#aaffee',4,false);
             }
           }
           return false;
@@ -1079,7 +1121,7 @@ function updateProjectiles(dt) {
           if(e.dead||e.reached) return;
           const dx=p.cx-e.x, dy=p.cy-e.y, dist=Math.hypot(dx,dy);
           if(dist<rng&&dist>2){
-            const pull=Math.min(dist, 55*dt*(1-dist/rng));
+            const pull=Math.min(dist, 18*dt*(1-dist/rng));
             e.x+=dx/dist*pull; e.y+=dy/dist*pull;
             e.slowTimer=Math.max(e.slowTimer,0.3);
           }
@@ -1091,7 +1133,7 @@ function updateProjectiles(dt) {
           // Big damage burst to all nearby
           G.enemies.forEach(e=>{
             if(e.dead||e.reached) return;
-            if(Math.hypot(p.cx-e.x,p.cy-e.y)<rng) applyHit(e,p.dmg*8,p.slow,p.type);
+            if(Math.hypot(p.cx-e.x,p.cy-e.y)<rng) applyHit(e,p.dmg*2.5,p.slow,p.type);
           });
           addParticle(p.cx,p.cy,p.color,22,true);
           p.life=0; // remove
@@ -1109,7 +1151,6 @@ function updateProjectiles(dt) {
       if(t>=0&&t<hitT){ hitT=t; hitE=e; }
     }
     if(hitE){
-      // Place bullet at exact contact point
       const cx=p.x+stepX*hitT, cy=p.y+stepY*hitT;
       if(p.splash>0){
         G.projectiles._voidX=cx; G.projectiles._voidY=cy;
@@ -1121,12 +1162,14 @@ function updateProjectiles(dt) {
       } else {
         applyHit(hitE,p.dmg,p.slow,p.type); addParticle(cx,cy,p.color,4);
       }
-      return false;
+      _killed=true; break;
     }
 
     p.x+=stepX; p.y+=stepY;
     if(p.x<-60||p.x>W+60||p.y<-60||p.y>H+60) return false;
-    return true;
+
+    } // end substep loop
+    return !_killed;
   });
 }
 
@@ -1401,7 +1444,22 @@ function drawProjectile(p) {
     ctx.beginPath(); ctx.arc(0,0,7,0,Math.PI*2); ctx.fill();
     ctx.restore(); return;
   }
-  const sz=p.type==='shell'?5:p.type==='rail'?4:p.type==='nova'?7:p.type==='mirror'?4:3;
+  // Mirror shard: spinning diamond with bright trail
+  if(p.type==='mirror'){
+    ctx.save(); ctx.translate(p.x,p.y);
+    const spin=Date.now()/80+(p.bounces||0)*1.5;
+    ctx.rotate(spin);
+    const sz=7;
+    ctx.fillStyle='#88ffdd'; ctx.shadowColor='#88ffdd'; ctx.shadowBlur=18;
+    ctx.beginPath(); ctx.moveTo(0,-sz); ctx.lineTo(sz*0.6,0); ctx.lineTo(0,sz); ctx.lineTo(-sz*0.6,0); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#ffffff'; ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.moveTo(0,-sz*0.4); ctx.lineTo(sz*0.2,0); ctx.lineTo(0,sz*0.4); ctx.lineTo(-sz*0.2,0); ctx.closePath(); ctx.fill();
+    ctx.restore();
+    // Trailing glow particles
+    for(let i=0;i<2;i++) G.particles.push({x:p.x+(Math.random()-.5)*6,y:p.y+(Math.random()-.5)*6,color:'#88ffdd',size:2.5,vx:(Math.random()-.5)*15,vy:(Math.random()-.5)*15,life:0.15,maxLife:0.2});
+    return;
+  }
+  const sz=p.type==='shell'?5:p.type==='rail'?4:p.type==='nova'?7:3;
   ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=10;
   ctx.beginPath(); ctx.arc(p.x,p.y,sz,0,Math.PI*2); ctx.fill();
   ctx.shadowBlur=0;
@@ -1791,5 +1849,60 @@ canvas.addEventListener('touchend', function(e){
   </div>
 </div>
 
+
+<!-- ADMIN PANEL -->
+<div id="admin-overlay">
+  <div id="admin-box">
+    <button id="close-admin" onclick="closeAdmin()">✕</button>
+    <div class="adm-title">⚠ ADMIN PANEL</div>
+    <div class="adm-sub">// DEV CONSOLE — PRESS A AGAIN TO CLOSE //</div>
+
+    <!-- RESOURCES -->
+    <div class="adm-section">
+      <div class="adm-section-title">// RESOURCES</div>
+      <div class="adm-row">
+        <label>Gold</label>
+        <input class="adm-input" id="adm-gold" type="number" min="0" placeholder="e.g. 9999">
+        <button class="adm-btn gold" onclick="admSetGold()">SET</button>
+        <button class="adm-btn gold" onclick="admAddGold()">+ADD</button>
+      </div>
+      <div class="adm-row">
+        <label>Lives</label>
+        <input class="adm-input" id="adm-lives" type="number" min="1" placeholder="e.g. 20">
+        <button class="adm-btn green" onclick="admSetLives()">SET</button>
+      </div>
+      <div class="adm-row">
+        <label>Wave</label>
+        <input class="adm-input" id="adm-wave" type="number" min="0" placeholder="e.g. 15">
+        <button class="adm-btn" onclick="admSetWave()">SET</button>
+      </div>
+    </div>
+
+    <!-- GACHA TOWERS -->
+    <div class="adm-section">
+      <div class="adm-section-title">// GACHA TOWER INVENTORY</div>
+      <div class="adm-tower-grid" id="adm-gacha-grid"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="adm-btn gold" onclick="admGiveAll()">GIVE ALL ×3</button>
+        <button class="adm-btn" onclick="admClearGacha()">CLEAR ALL</button>
+      </div>
+      <div class="adm-hint">Set qty then click APPLY, or use GIVE ALL</div>
+    </div>
+
+    <!-- PLACE TOWERS -->
+    <div class="adm-section">
+      <div class="adm-section-title">// QUICK ACTIONS</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <button class="adm-btn gold" onclick="admMaxGold()">MAX GOLD (99999)</button>
+        <button class="adm-btn green" onclick="admMaxLives()">MAX LIVES (99)</button>
+        <button class="adm-btn" onclick="admClearEnemies()">CLEAR ENEMIES</button>
+        <button class="adm-btn" onclick="admClearTowers()">REMOVE ALL TOWERS</button>
+        <button class="adm-btn" onclick="admSkipWave()">SKIP WAVE</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </body>
-</html>
+</html>                                                            i want you to make the fast red dimod shape enemies slower
